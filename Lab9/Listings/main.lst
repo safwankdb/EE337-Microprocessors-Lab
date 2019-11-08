@@ -1,0 +1,143 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              11/01/2019 16:00:16 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.exe main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <at89c5131.h>
+   2          #include <lcd.h>
+   3          #include <serial.c>
+   4          
+   5          sbit LED=P1^7;
+   6          sbit LED6=P1^6;
+   7          sbit LED5=P1^5;
+   8          sbit LED4=P1^4;
+   9          sbit s3=P1^3;
+  10          sbit s2=P1^2;
+  11          sbit s1=P1^1;
+  12          sbit s0=P1^0;
+  13          
+  14          //char s1,s2,s3,s4;
+  15          
+  16          unsigned char intr_count = 0,rx_buf = 0;
+  17          //bit tx_complete = 0;
+  18          //bit rx_complete = 0;
+  19          
+  20          void timer_ISR(void) interrupt 1
+  21          {
+  22   1        intr_count++;
+  23   1          LED = ~LED;
+  24   1      } 
+  25          
+  26          void gpio_test(void)
+  27          {
+  28   1      // Write your testing code here.
+  29   1        
+  30   1        LED = s3;
+  31   1        LED6 = s2;
+  32   1        LED5 = s1;
+  33   1        LED4 = s0;
+  34   1        
+  35   1        msdelay(2000);
+  36   1        LED = 0;
+  37   1        LED6 = 0;
+  38   1        LED5 = 0;
+  39   1        LED4 = 0;
+  40   1      } 
+  41          
+  42          void led_test(void)
+  43          {
+  44   1      // Write your testing code here.  
+  45   1        lcd_init();
+  46   1        lcd_write_string("starting LED");
+  47   1        LED = 1;
+  48   1        LED6 = 1;
+  49   1        LED5 = 1;
+  50   1        LED4 = 1;
+  51   1        msdelay(2000);
+  52   1        LED = 0;
+  53   1        LED6 = 0;
+  54   1        LED5 = 0;
+C51 COMPILER V9.60.0.0   MAIN                                                              11/01/2019 16:00:16 PAGE 2   
+
+  55   1        LED4 = 0;
+  56   1        lcd_init();
+  57   1        lcd_write_string("all LED tested");
+  58   1      }
+  59          
+  60          void lcd_test(void)
+  61          {
+  62   1      // Write your testing code here.
+  63   1        lcd_init();
+  64   1        lcd_write_string("LCD is tested");
+  65   1      } 
+  66          
+  67          void timer_test(void)
+  68          {
+  69   1        while(!rx_complete){
+  70   2        LED =1;
+  71   2        msdelay(500);
+  72   2        LED = 0;
+  73   2        msdelay(500);
+  74   2        }
+  75   1      }
+  76          
+  77          void main(void)
+  78          {
+  79   1        unsigned char ch=0;
+  80   1        P1 = 0x0F;
+  81   1        lcd_init();
+  82   1        uart_init();
+  83   1        transmit_string("************************\r\n");
+  84   1        transmit_string("******8051 Tests********\r\n");
+  85   1        transmit_string("************************\r\n");
+  86   1        transmit_string("Press 1 for GPIO test\r\n");
+  87   1        transmit_string("Press 2 for LED test\r\n");
+  88   1        transmit_string("Press 3 for LCD test\r\n");
+  89   1      
+  90   1        lcd_write_string("doing something");
+  91   1        while(1)
+  92   1        {
+  93   2            ch = receive_char();
+  94   2            switch(ch)
+  95   2            {
+  96   3              case '1':gpio_test();
+  97   3                       transmit_string("GPIO tested\r\n");
+  98   3                       break;
+  99   3              case '2':transmit_string("starting LED\r\n");
+ 100   3                       led_test();
+ 101   3                       transmit_string("LED tested for 2 secs\r\n");
+ 102   3                       break;
+ 103   3              case '3':lcd_test();
+ 104   3                       transmit_string("LCD tested\r\n");
+ 105   3                       break;
+ 106   3              case '4':timer_test();
+ 107   3                       transmit_string("Timer tested\r\n");
+ 108   3                       break;
+ 109   3                      
+ 110   3              default:transmit_string("Incorrect test.Pass correct number\r\n");
+ 111   3                       break;
+ 112   3              
+ 113   3            }   
+ 114   2        }
+ 115   1      }
+
+C51 COMPILER V9.60.0.0   MAIN                                                              11/01/2019 16:00:16 PAGE 3   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    725    ----
+   CONSTANT SIZE    =    300    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2      12
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -9,7 +9,7 @@ INIT:
 	;-- store the numbers to be added at appropriate locations
 	MOV R0, #28H
 	MOV R1, #40H
-	MOV R2, #1
+	MOV R2, #0FFH
 	
 	LOOP0:
 		MOV A, R2

@@ -1,0 +1,100 @@
+A51 MACRO ASSEMBLER  TEMPLATE_CHECKSUM                                                    11/01/2019 16:22:25 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\template_checksum.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE template_checksum.asm SET(SMALL) DEBUG PRINT(.\Listings\template_checks
+                      um.lst) OBJECT(.\Objects\template_checksum.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 00H
+                       2     ;-- code memory location 00h
+0000 020200            3     LJMP MAIN
+                       4     
+0050                   5     ORG 50H
+                       6     ;-- code memory location 50h
+                       7     
+0050                   8     INIT:
+                       9             ;-- store the numbers to be added at appropriate locations
+0050 7828             10             MOV R0, #28H
+0052 7940             11             MOV R1, #40H
+0054 7AFF             12             MOV R2, #0FFH
+                      13             
+0056                  14             LOOP0:
+0056 EA               15                     MOV A, R2
+0057 F7               16                     MOV @R1, A
+0058 09               17                     INC R1
+                      18                     ;INC R2
+0059 D8FB             19                     DJNZ R0, LOOP0
+005B 22               20             RET
+                      21     ;-- end of subroutine INIT
+                      22     
+005C                  23     ADD_40:
+                      24             ;-- add the numbers stored from memory location 40h to 67h
+                      25             ;-- by using subroutine written in homework
+005C 7828             26             MOV R0, #28H
+005E 7940             27             MOV R1, #40H
+0060 7400             28             MOV A, #0
+0062                  29             LOOP1:
+0062 27               30                     ADD A, @R1
+0063 09               31                     INC R1
+0064 D8FC             32                     DJNZ R0, LOOP1
+0066 22               33             RET
+                      34     ;-- end of subroutine ADD_40
+                      35             
+0067                  36     TWOS_COMP:
+                      37             ;-- perform 2's compliment of the resultant sum
+                      38             ;-- store the checksum byte at memory location 68h
+0067 F4               39             CPL A
+0068 2401             40             ADD A, #1
+006A F568             41             MOV 68H, A
+006C 22               42             RET
+                      43     ;-- end of subroutine TWOS_COMP
+                      44     
+006D                  45     ADD_41:
+                      46             ;-- add numbers from memory location 40h to 68h
+006D 7829             47             MOV R0, #29H
+006F 7940             48             MOV R1, #40H
+0071 7400             49             MOV A, #0
+0073                  50             LOOP2:
+0073 27               51                     ADD A, @R1
+0074 09               52                     INC R1
+0075 D8FC             53                     DJNZ R0, LOOP2
+0077 22               54             RET
+                      55     ;-- end of subroutine ADD_41
+                      56     
+0200                  57     ORG 0200H
+A51 MACRO ASSEMBLER  TEMPLATE_CHECKSUM                                                    11/01/2019 16:22:25 PAGE     2
+
+                      58     ;-- code memory location 200h
+0200                  59     MAIN:
+0200 1150             60             ACALL INIT
+0202 115C             61             ACALL ADD_40
+0204 1167             62             ACALL TWOS_COMP
+0206 116D             63             ACALL ADD_41    ;verify the result
+0208 80FE             64             HERE:SJMP HERE
+                      65     END
+A51 MACRO ASSEMBLER  TEMPLATE_CHECKSUM                                                    11/01/2019 16:22:25 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADD_40 . . . . . .  C ADDR   005CH   A   
+ADD_41 . . . . . .  C ADDR   006DH   A   
+HERE . . . . . . .  C ADDR   0208H   A   
+INIT . . . . . . .  C ADDR   0050H   A   
+LOOP0. . . . . . .  C ADDR   0056H   A   
+LOOP1. . . . . . .  C ADDR   0062H   A   
+LOOP2. . . . . . .  C ADDR   0073H   A   
+MAIN . . . . . . .  C ADDR   0200H   A   
+TWOS_COMP. . . . .  C ADDR   0067H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
